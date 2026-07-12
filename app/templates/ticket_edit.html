@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Ticket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='/css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>Edit Ticket #{{ ticket.id }}</h1>
+
+        <form
+            method="post"
+            action="/tickets/{{ ticket.id }}/edit"
+        >
+
+            <div>
+                <label for="requester_name">Requester Name</label>
+
+                <input
+                    type="text"
+                    id="requester_name"
+                    name="requester_name"
+                    value="{{ ticket.requester_name }}"
+                    required
+                >
+            </div>
+
+            <div>
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="{{ ticket.email }}"
+                    required
+                >
+            </div>
+
+            <div>
+                <label for="category">Category</label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+                    {% for category in categories %}
+                        <option
+                            value="{{ category }}"
+                            {% if ticket.category == category %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ category }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="title">Ticket Title</label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value="{{ ticket.title }}"
+                    required
+                >
+            </div>
+
+            <div>
+                <label for="description">Description</label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="6"
+                    required
+                >{{ ticket.description }}</textarea>
+            </div>
+
+            <div>
+                <label for="priority">Priority</label>
+
+                <select
+                    id="priority"
+                    name="priority"
+                    required
+                >
+                    {% for priority in priorities %}
+                        <option
+                            value="{{ priority }}"
+                            {% if ticket.priority == priority %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ priority }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="status">Status</label>
+
+                <select
+                    id="status"
+                    name="status"
+                    required
+                >
+                    {% for status in statuses %}
+                        <option
+                            value="{{ status }}"
+                            {% if ticket.status == status %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ status }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <button type="submit">
+                    Save Changes
+                </button>
+
+                <a href="/tickets/{{ ticket.id }}">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </main>
+
+</body>
+</html>
