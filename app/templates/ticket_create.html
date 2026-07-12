@@ -2,12 +2,14 @@
 {% block content %}
 <div class="panel" style="max-width: 650px; margin: 0 auto;">
     <h2 style="margin-bottom: 0.5rem;">File a Technical Support Request</h2>
-    <p style="color: #718096; margin-bottom: 2rem; font-size: 0.95rem;">Please provide clear summaries to ensure fast resolution times from helpdesk technicians.</p>
+    <p style="color: #718096; margin-bottom: 2rem; font-size: 0.95rem;">Please provide clear summaries to ensure fast
+        resolution times from helpdesk technicians.</p>
 
     <form action="/tickets/new" method="POST">
         <div class="form-group">
             <label for="requester_name">Your Full Name *</label>
-            <input type="text" id="requester_name" name="requester_name" class="form-control" placeholder="e.g. John Doe" required>
+            <input type="text" id="requester_name" name="requester_name" class="form-control"
+                placeholder="e.g. John Doe" required>
         </div>
 
         <div class="form-group">
@@ -38,18 +40,23 @@
 
         <div class="form-group">
             <label for="title">Short Issue Title *</label>
-            <input type="text" id="title" name="title" class="form-control" placeholder="Briefly summarize the problem" required>
+            <input type="text" id="title" name="title" class="form-control" placeholder="Briefly summarize the problem"
+                required>
         </div>
 
         <div class="form-group">
             <label for="description">Detailed Description *</label>
-            <textarea id="description" name="description" class="form-control" rows="5" placeholder="Provide details like error messages, room numbers, or device identifiers..." required></textarea>
+            <textarea id="description" name="description" class="form-control" rows="5"
+                placeholder="Provide details like error messages, room numbers, or device identifiers..."
+                required></textarea>
         </div>
 
-        <div style="margin-top: 2.5rem; display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+        <div
+            style="margin-top: 2.5rem; display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
             <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">File Ticket</button>
             <a href="/tickets" class="btn btn-secondary" style="padding: 0.75rem 1.5rem;">Cancel</a>
         </div>
     </form>
 </div>
-{% block content %}{% endblock %}
+
+{% endblock %}
