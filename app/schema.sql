@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS tickets (
     category VARCHAR(50) NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
-    priority VARCHAR(20) DEFAULT 'Medium', -- Fixed missing comma here
+    priority VARCHAR(20) DEFAULT 'Medium',
     status VARCHAR(20) DEFAULT 'Open',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
