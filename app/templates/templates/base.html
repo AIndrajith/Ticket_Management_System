@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Helpdesk System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" style="font-size: 1.3rem; letter-spacing: -0.02em;">🏫 <strong>Campus Helpdesk</strong></a>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/tickets">View All Tickets</a>
+            <a href="/tickets/new" class="btn btn-primary" style="padding: 0.4rem 0.9rem; margin-left: 1rem;">Submit Ticket</a>
+        </div>
+    </nav>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
+
