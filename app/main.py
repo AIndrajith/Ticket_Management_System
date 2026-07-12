@@ -4,15 +4,18 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-# Keep your unified database architecture configuration
+# Core setup architecture and shared assets
 from app.database import Base, engine, get_db, Ticket
+
+# Bring in Developer 3's new modular router configuration block
+from app.routes.ticket_actions import router as ticket_actions_router
 
 # Automatically generate database tables in MySQL if missing
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Campus Helpdesk Ticket Management System")
 
-# Restored the correct paths pointing inside the app directory
+# Correct paths pointing inside the app directory
 app.mount(
     "/static",
     StaticFiles(directory="app/static"),
@@ -68,6 +71,9 @@ def validate_ticket_form(
     return None
 
 
+# -------------------------------------------------------------
+# Core Dashboard Route (Kept at root level)
+# -------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request, db: Session = Depends(get_db)):
     """Display the dashboard with total, open, and resolved counts."""
@@ -90,122 +96,8 @@ def home(request: Request, db: Session = Depends(get_db)):
         return render_error(request, "Unable to load the dashboard.")
 
 
-@app.get("/tickets", response_class=HTMLResponse)
-def ticket_list(request: Request, db: Session = Depends(get_db)):
-    """Retrieve and display all support tickets."""
-    try:
-        # Fetch tickets ordered by creation date descending
-        tickets = db.query(Ticket).order_by(Ticket.created_at.desc()).all()
-        return templates.TemplateResponse(
-            request=request,
-            name="ticket_list.html",
-            context={"tickets": tickets},
-        )
-    except Exception as error:
-        print(f"Ticket list database error: {error}")
-        return render_error(request, "Unable to retrieve support tickets.")
-
-
-@app.get("/tickets/new", response_class=HTMLResponse)
-def show_new_ticket_form(request: Request):
-    """Display the ticket submission form."""
-    return templates.TemplateResponse(
-        request=request,
-        name="ticket_create.html",
-        context={
-            "categories": CATEGORIES,
-            "priorities": PRIORITIES,
-            "form_data": {},
-            "error": None,
-        },
-    )
-
-
-@app.post("/tickets/new", response_class=HTMLResponse)
-def create_ticket(
-    request: Request,
-    requester_name: str = Form(...),
-    email: str = Form(...),
-    category: str = Form(...),
-    title: str = Form(...),
-    description: str = Form(...),
-    priority: str = Form("Medium"),
-    db: Session = Depends(get_db),
-):
-    """Validate and save a new support ticket using SQLAlchemy ORM."""
-    form_data = {
-        "requester_name": requester_name.strip(),
-        "email": email.strip().lower(),
-        "category": category.strip(),
-        "title": title.strip(),
-        "description": description.strip(),
-        "priority": priority.strip(),
-    }
-
-    validation_error = validate_ticket_form(**form_data)
-    if validation_error:
-        return templates.TemplateResponse(
-            request=request,
-            name="ticket_create.html",
-            context={
-                "categories": CATEGORIES,
-                "priorities": PRIORITIES,
-                "form_data": form_data,
-                "error": validation_error,
-            },
-            status_code=status.HTTP_400_BAD_REQUEST,
-        )
-
-    try:
-        new_ticket = Ticket(
-            requester_name=form_data["requester_name"],
-            email=form_data["email"],
-            category=form_data["category"],
-            title=form_data["title"],
-            description=form_data["description"],
-            priority=form_data["priority"],
-            status="Open",
-        )
-        db.add(new_ticket)
-        db.commit()
-        db.refresh(new_ticket)
-
-        return RedirectResponse(
-            url=f"/tickets/{new_ticket.id}",
-            status_code=status.HTTP_303_SEE_OTHER,
-        )
-    except Exception as error:
-        print(f"Ticket creation database error: {error}")
-        db.rollback()
-        return templates.TemplateResponse(
-            request=request,
-            name="ticket_create.html",
-            context={
-                "categories": CATEGORIES,
-                "priorities": PRIORITIES,
-                "form_data": form_data,
-                "error": "Unable to save the ticket. Please try again.",
-            },
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
-
-
-@app.get("/tickets/{ticket_id}", response_class=HTMLResponse)
-def ticket_details(request: Request, ticket_id: int, db: Session = Depends(get_db)):
-    """Retrieve and display one selected ticket."""
-    try:
-        ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
-        if ticket is None:
-            return render_error(
-                request,
-                "The requested ticket was not found.",
-                status_code=status.HTTP_404_NOT_FOUND,
-            )
-        return templates.TemplateResponse(
-            request=request,
-            name="ticket_details.html",
-            context={"ticket": ticket},
-        )
-    except Exception as error:
-        print(f"Ticket details database error: {error}")
-        return render_error(request, "Unable to retrieve the selected ticket.")
+# -------------------------------------------------------------
+# Include Team Sub-Routers
+# -------------------------------------------------------------
+# This registers all /tickets CRUD endpoints managed by Dev 2 & 3
+app.include_router(ticket_actions_router)

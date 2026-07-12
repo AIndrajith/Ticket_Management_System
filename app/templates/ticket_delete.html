@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Ticket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='/css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>Delete Ticket</h1>
+
+        <p>
+            Are you sure you want to delete
+            <strong>
+                Ticket #{{ ticket.id }} — {{ ticket.title }}
+            </strong>?
+        </p>
+
+        <p>
+            This action cannot be undone.
+        </p>
+
+        <form
+            method="post"
+            action="/tickets/{{ ticket.id }}/delete"
+        >
+            <button type="submit">
+                Yes, Delete Ticket
+            </button>
+
+            <a href="/tickets/{{ ticket.id }}">
+                Cancel
+            </a>
+        </form>
+
+    </main>
+
+</body>
+</html>
