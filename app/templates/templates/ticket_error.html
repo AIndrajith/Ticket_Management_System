@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="panel" style="max-width: 550px; margin: 5rem auto; text-align: center;">
+    <div style="font-size: 3rem;">⚠️</div>
+    <h2>An Error Occurred</h2>
+    <div style="background: #fff5f5; color: #c53030; padding: 1rem; border-left: 4px solid var(--high); text-align: left; margin: 1.5rem 0; font-family: monospace;">
+        {{ error_message }}
+    </div>
+    <a href="/" class="btn btn-primary" style="display: block;">Return to Dashboard</a>
+</div>
+{% endblock %}
