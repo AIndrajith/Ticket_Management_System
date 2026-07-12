@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align: center; margin: 3rem 0;">
+    <h1>Campus Helpdesk Management System</h1>
+    <p style="color: #4a5568; margin-top: 0.5rem;">Report technical issues or administrative inquiries directly to campus support staff.</p>
+</div>
+
+<div class="dashboard">
+    <div class="card">
+        <h3>Total Tickets</h3>
+        <p>{{ total_tickets }}</p>
+    </div>
+    <div class="card" style="border-top-color: var(--open);">
+        <h3>Open Tickets</h3>
+        <p style="color: var(--open);">{{ open_tickets }}</p>
+    </div>
+    <div class="card" style="border-top-color: var(--resolved);">
+        <h3>Resolved Tickets</h3>
+        <p style="color: var(--resolved);">{{ resolved_tickets }}</p>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 3rem;">
+    <a href="/tickets/new" class="btn btn-primary" style="padding: 1rem 2.5rem;">Create a New Support Ticket</a>
+</div>
+{% endblock %}
