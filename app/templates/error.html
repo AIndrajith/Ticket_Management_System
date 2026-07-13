@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Error</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='/css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>Something went wrong</h1>
+
+        <p>
+            {{ message }}
+        </p>
+
+        <a href="/tickets">
+            Return to Ticket List
+        </a>
+
+    </main>
+
+</body>
+</html>

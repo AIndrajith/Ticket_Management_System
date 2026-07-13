@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="panel" style="max-width: 650px; margin: 0 auto;">
+    <h2 style="margin-bottom: 0.5rem;">File a Technical Support Request</h2>
+    <p style="color: #718096; margin-bottom: 2rem; font-size: 0.95rem;">Please provide clear summaries to ensure fast
+        resolution times from helpdesk technicians.</p>
+
+    <form action="/tickets/new" method="POST">
+        <div class="form-group">
+            <label for="requester_name">Your Full Name *</label>
+            <input type="text" id="requester_name" name="requester_name" class="form-control"
+                placeholder="e.g. John Doe" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Campus Email Address *</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="username@campus.edu" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="category">Issue Category *</label>
+                <select id="category" name="category" class="form-control" required>
+                    <option value="Technical">Technical</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Facilities">Facilities</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="priority">Priority Level</label>
+                <select id="priority" name="priority" class="form-control">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="title">Short Issue Title *</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="Briefly summarize the problem"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Detailed Description *</label>
+            <textarea id="description" name="description" class="form-control" rows="5"
+                placeholder="Provide details like error messages, room numbers, or device identifiers..."
+                required></textarea>
+        </div>
+
+        <div
+            style="margin-top: 2.5rem; display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">File Ticket</button>
+            <a href="/tickets" class="btn btn-secondary" style="padding: 0.75rem 1.5rem;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

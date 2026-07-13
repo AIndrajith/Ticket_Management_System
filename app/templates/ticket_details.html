@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="panel">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
+        <div>
+            <span style="color: #718096; font-size: 0.9rem; font-weight: 600;">TICKET REFERENCE #{{ ticket.id }}</span>
+            <h1 style="margin-top: 0.25rem; color: #1a202c;">{{ ticket.title }}</h1>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <span class="badge badge-{{ ticket.priority|lower }}">{{ ticket.priority }} Priority</span>
+            <span class="badge badge-{{ ticket.status|lower|replace(' ', '') }}">{{ ticket.status }}</span>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
+        <div>
+            <h3 style="color: #4a5568; font-size: 1rem; margin-bottom: 0.75rem;">Reported Description</h3>
+            <div style="white-space: pre-line; background: #f7fafc; padding: 1.5rem; border-radius: 6px; border: 1px solid var(--border); min-height: 200px; color: #2d3748;">{{ ticket.description }}</div>
+        </div>
+
+        <div style="background: #edf2f7; padding: 1.5rem; border-radius: 8px; border: 1px solid #cbd5e0;">
+            <h3 style="color: #4a5568; font-size: 1rem; margin-bottom: 1rem; border-bottom: 1px solid #cbd5e0; padding-bottom: 0.5rem;">Metadata Log</h3>
+            <p style="margin-bottom: 0.75rem;"><strong>User:</strong> {{ ticket.requester_name }}</p>
+            <p style="margin-bottom: 0.75rem;"><strong>Email:</strong> <a href="mailto:{{ ticket.email }}" style="color: var(--primary);">{{ ticket.email }}</a></p>
+            <p style="margin-bottom: 0.75rem;"><strong>Domain:</strong> {{ ticket.category }}</p>
+            <div style="margin-top: 2rem; font-size: 0.8rem; color: #718096; line-height: 1.4;">
+                <p>Opened: {{ ticket.created_at }}</p>
+                <p>Modified: {{ ticket.updated_at }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+        <!-- Dropdown to instantly alter ticket status via form submit trigger -->
+        <form action="/tickets/{{ ticket.id }}/status" method="POST" style="display: flex; align-items: center; gap: 0.75rem;">
+            <label for="status" style="font-weight: 600; color: #4a5568; font-size: 0.95rem;">Triage Workflow State:</label>
+            <select name="status" id="status" class="form-control" style="width: auto; padding: 0.4rem 2rem 0.4rem 0.75rem;" onchange="this.form.submit()">
+                <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>Open</option>
+                <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+            </select>
+        </form>
+
+        <div style="display: flex; gap: 0.75rem;">
+            <a href="/tickets/{{ ticket.id }}/edit" class="btn btn-primary">Edit Ticket Info</a>
+            <a href="/tickets/{{ ticket.id }}/delete" class="btn btn-danger">Delete Log</a>
+            <a href="/tickets" class="btn btn-secondary">Back to Workspace</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Campus Helpdesk Ticket Management System.iml" filepath="$PROJECT_DIR$/.idea/Campus Helpdesk Ticket Management System.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Ticket_Management_System.iml" filepath="$PROJECT_DIR$/.idea/Ticket_Management_System.iml" />
     </modules>
   </component>
 </project>
