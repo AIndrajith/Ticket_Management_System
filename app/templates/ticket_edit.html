@@ -1,66 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+{% block content %}
+<div class="panel" style="max-width: 650px; margin: 0 auto;">
+    <h2 style="margin-bottom: 0.5rem;">Edit Ticket #{{ ticket.id }}</h2>
+    <p style="color: #718096; margin-bottom: 2rem; font-size: 0.95rem;">Update the details below and save your changes.</p>
 
-    <title>Edit Ticket</title>
+    <form method="post" action="/tickets/{{ ticket.id }}/edit">
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', path='/css/style.css') }}"
-    >
-</head>
+        <div class="form-group">
+            <label for="requester_name">Requester Name *</label>
+            <input
+                type="text"
+                id="requester_name"
+                name="requester_name"
+                class="form-control"
+                value="{{ ticket.requester_name }}"
+                placeholder="e.g. John Doe"
+                required
+            >
+        </div>
 
-<body>
+        <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                value="{{ ticket.email }}"
+                placeholder="username@campus.edu"
+                required
+            >
+        </div>
 
-    <main class="container">
-
-        <h1>Edit Ticket #{{ ticket.id }}</h1>
-
-        <form
-            method="post"
-            action="/tickets/{{ ticket.id }}/edit"
-        >
-
-            <div>
-                <label for="requester_name">Requester Name</label>
-
-                <input
-                    type="text"
-                    id="requester_name"
-                    name="requester_name"
-                    value="{{ ticket.requester_name }}"
-                    required
-                >
-            </div>
-
-            <div>
-                <label for="email">Email Address</label>
-
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value="{{ ticket.email }}"
-                    required
-                >
-            </div>
-
-            <div>
-                <label for="category">Category</label>
-
-                <select
-                    id="category"
-                    name="category"
-                    required
-                >
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="category">Issue Category *</label>
+                <select id="category" name="category" class="form-control" required>
                     {% for category in categories %}
                         <option
                             value="{{ category }}"
-                            {% if ticket.category == category %}
-                                selected
-                            {% endif %}
+                            {% if ticket.category == category %}selected{% endif %}
                         >
                             {{ category }}
                         </option>
@@ -68,84 +47,65 @@
                 </select>
             </div>
 
-            <div>
-                <label for="title">Ticket Title</label>
-
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value="{{ ticket.title }}"
-                    required
-                >
-            </div>
-
-            <div>
-                <label for="description">Description</label>
-
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="6"
-                    required
-                >{{ ticket.description }}</textarea>
-            </div>
-
-            <div>
-                <label for="priority">Priority</label>
-
-                <select
-                    id="priority"
-                    name="priority"
-                    required
-                >
+            <div class="form-group">
+                <label for="priority">Priority Level</label>
+                <select id="priority" name="priority" class="form-control" required>
                     {% for priority in priorities %}
                         <option
                             value="{{ priority }}"
-                            {% if ticket.priority == priority %}
-                                selected
-                            {% endif %}
+                            {% if ticket.priority == priority %}selected{% endif %}
                         >
                             {{ priority }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
+        </div>
 
-            <div>
-                <label for="status">Status</label>
+        <div class="form-group">
+            <label for="title">Ticket Title *</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-control"
+                value="{{ ticket.title }}"
+                placeholder="Briefly summarize the problem"
+                required
+            >
+        </div>
 
-                <select
-                    id="status"
-                    name="status"
-                    required
-                >
-                    {% for status in statuses %}
-                        <option
-                            value="{{ status }}"
-                            {% if ticket.status == status %}
-                                selected
-                            {% endif %}
-                        >
-                            {{ status }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
+        <div class="form-group">
+            <label for="description">Detailed Description *</label>
+            <textarea
+                id="description"
+                name="description"
+                class="form-control"
+                rows="6"
+                placeholder="Provide details like error messages, room numbers, or device identifiers..."
+                required
+            >{{ ticket.description }}</textarea>
+        </div>
 
-            <div>
-                <button type="submit">
-                    Save Changes
-                </button>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status" class="form-control" required>
+                {% for status in statuses %}
+                    <option
+                        value="{{ status }}"
+                        {% if ticket.status == status %}selected{% endif %}
+                    >
+                        {{ status }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-                <a href="/tickets/{{ ticket.id }}">
-                    Cancel
-                </a>
-            </div>
+        <div style="margin-top: 2.5rem; display: flex; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">Save Changes</button>
+            <a href="/tickets/{{ ticket.id }}" class="btn btn-secondary" style="padding: 0.75rem 1.5rem;">Cancel</a>
+        </div>
 
-        </form>
-
-    </main>
-
-</body>
-</html>
+    </form>
+</div>
+{% endblock %}

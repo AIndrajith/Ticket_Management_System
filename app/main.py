@@ -287,7 +287,7 @@ def update_ticket(
         title: str = Form(...),
         description: str = Form(...),
         priority: str = Form(...),
-        ticket_status: str = Form(...),
+        status: str = Form(...),
         db: Session = Depends(get_db)
 ):
     ticket_data = {
@@ -298,7 +298,7 @@ def update_ticket(
         "title": title.strip(),
         "description": description.strip(),
         "priority": priority.strip(),
-        "status": ticket_status.strip(),
+        "status": status.strip(),
     }
 
     validation_error = validate_ticket_form(
@@ -322,7 +322,7 @@ def update_ticket(
                 "statuses": STATUSES,
                 "error": validation_error,
             },
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=400,
         )
 
     try:
@@ -331,7 +331,7 @@ def update_ticket(
             return render_error(
                 request,
                 "The requested ticket was not found.",
-                status_code=status.HTTP_404_NOT_FOUND,
+                status_code=404,
             )
 
         # Apply updates securely
@@ -347,7 +347,7 @@ def update_ticket(
 
         return RedirectResponse(
             url=f"/tickets/{ticket_id}",
-            status_code=status.HTTP_303_SEE_OTHER,
+            status_code=303,
         )
     except Exception as error:
         print(f"Ticket update database error: {error}")
@@ -362,7 +362,7 @@ def update_ticket(
                 "statuses": STATUSES,
                 "error": "Unable to update the ticket.",
             },
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=500,
         )
 
 
@@ -374,16 +374,16 @@ def update_ticket(
 def update_ticket_status(
         request: Request,
         ticket_id: int,
-        ticket_status: str = Form(...),
+        status: str = Form(...),
         db: Session = Depends(get_db)
 ):
-    status_clean = ticket_status.strip()
+    status_clean = status.strip()
 
     if status_clean not in STATUSES:
         return render_error(
             request,
             "Invalid ticket status.",
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=400,
         )
 
     try:
@@ -392,7 +392,7 @@ def update_ticket_status(
             return render_error(
                 request,
                 "The requested ticket was not found.",
-                status_code=status.HTTP_404_NOT_FOUND,
+                status_code=404,
             )
 
         ticket.status = status_clean
@@ -400,7 +400,7 @@ def update_ticket_status(
 
         return RedirectResponse(
             url=f"/tickets/{ticket_id}",
-            status_code=status.HTTP_303_SEE_OTHER,
+            status_code=303,
         )
     except Exception as error:
         print(f"Status update database error: {error}")
